@@ -5,12 +5,11 @@
 #include <random>
 #include <fstream>
 
-// Function to generate random data
 std::vector<int> generateRandomData(int size) {
     std::vector<int> data(size);
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<> distrib(1, 1000000); // Random numbers up to 1,000,000
+    std::uniform_int_distribution<> distrib(1, 1000000);
     for (int i = 0; i < size; ++i) {
         data[i] = distrib(gen);
     }
@@ -53,7 +52,7 @@ int sequentialSearch(const std::vector<int>& arr, int target) {
     return -1;
 }
 
-// Binary Search (requires sorted array)
+// Binary Search
 int binarySearch(const std::vector<int>& arr, int target) {
     int left = 0;
     int right = arr.size() - 1;
@@ -84,7 +83,7 @@ int main() {
     binary_search_results << "n,time_ns\n";
 
     std::vector<int> input_sizes = {100, 500, 1000, 2000, 5000, 10000, 20000, 50000};
-    int num_repetitions = 5; // Number of repetitions for averaging
+    int num_repetitions = 5;
 
     for (int n : input_sizes) {
         long long total_bubble_time = 0;
@@ -97,33 +96,26 @@ int main() {
             std::vector<int> data_copy_for_sort = data;
             std::vector<int> data_copy_for_search = data;
 
-            // Measure Bubble Sort
             auto start = std::chrono::high_resolution_clock::now();
             bubbleSort(data_copy_for_sort);
             auto end = std::chrono::high_resolution_clock::now();
             total_bubble_time += std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
 
-            // Reset data for Insertion Sort
             data_copy_for_sort = data;
 
-            // Measure Insertion Sort
             start = std::chrono::high_resolution_clock::now();
             insertionSort(data_copy_for_sort);
             end = std::chrono::high_resolution_clock::now();
             total_insertion_time += std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
 
-            // For search algorithms, we need a target. Let's pick a random element from the generated data.
-            // And for binary search, the array needs to be sorted.
-            int target = data_copy_for_search[rand() % n]; // Pick a random element as target
-            std::sort(data_copy_for_search.begin(), data_copy_for_search.end()); // Sort for binary search
+            int target = data_copy_for_search[rand() % n];
+            std::sort(data_copy_for_search.begin(), data_copy_for_search.end());
 
-            // Measure Sequential Search
             start = std::chrono::high_resolution_clock::now();
             sequentialSearch(data, target);
             end = std::chrono::high_resolution_clock::now();
             total_sequential_search_time += std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
 
-            // Measure Binary Search
             start = std::chrono::high_resolution_clock::now();
             binarySearch(data_copy_for_search, target);
             end = std::chrono::high_resolution_clock::now();
@@ -141,7 +133,7 @@ int main() {
     sequential_search_results.close();
     binary_search_results.close();
 
-    std::cout << "Analysis complete. Results saved to respective CSV files.\n";
+    std::cout << "Analise completa.\n";
 
     return 0;
 }
